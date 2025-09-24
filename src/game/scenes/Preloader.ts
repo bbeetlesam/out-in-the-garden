@@ -1,7 +1,9 @@
-import { Scene } from 'phaser';
+import { Scene, GameObjects } from 'phaser';
 
 export class Preloader extends Scene
 {
+    text: GameObjects.Text;
+
     constructor ()
     {
         super('Preloader');
@@ -9,38 +11,46 @@ export class Preloader extends Scene
 
     init ()
     {
-        //  We loaded this image in our Boot Scene, so we can display it here
-        this.add.image(512, 384, 'background');
+        const centerX = this.cameras.main.centerX;
+        const centerY = this.cameras.main.centerY;
 
-        //  A simple progress bar. This is the outline of the bar.
-        this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
+        // some sketchy background in Preloader
+        this.add.image(centerX, centerY, 'disclaimer-bg')
+            .setDisplaySize(this.cameras.main.width, this.cameras.main.height)
+            .setAlpha(0.65);
 
-        //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-        const bar = this.add.rectangle(512-230, 384, 4, 28, 0xffffff);
+        // progress bar
+        const bar = this.add.rectangle(centerX - 230, centerY, 4, 28, 0xffffff); // bar
+        this.add.rectangle(centerX, centerY, 468, 32).setStrokeStyle(1, 0xffffff); // outline
 
-        //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
+        // loading text
+        this.text = this.add.text(centerX, centerY - 40, 'Loading...', {
+            fontFamily: '"Winky Sans"',
+            fontSize: '24px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
+
+        // use the 'progress' event emitted by the LoaderPlugin to update the loading bar
         this.load.on('progress', (progress: number) => {
-
-            //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
-            bar.width = 4 + (460 * progress);
-
+            bar.width = 4 + (460 * progress); // 464px wide
+            this.text.setText(`Loading... ${Math.floor(progress * 100)}%`);
         });
     }
 
     preload ()
     {
-        //  Load the assets for the game - Replace with your own assets
+        // load the images
         this.load.setPath('assets');
+        this.load.image('background', 'bg.png');
 
-        this.load.image('logo', 'logo.png');
+        // for debugging
+        // for (let i = 0; i < 2000; i++) {
+        //     this.load.image('logo-dummy-' + i, 'logo.png');
+        // }
     }
 
     create ()
     {
-        //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
-        //  For example, you can define global animations here, so we can use them in other scenes.
-
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start('MainMenu');
+        this.scene.start('Disclaimer');
     }
 }
