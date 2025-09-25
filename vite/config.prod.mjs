@@ -4,14 +4,14 @@ const phasermsg = () => {
     return {
         name: 'phasermsg',
         buildStart() {
-            process.stdout.write(`Building for production...\n`);
+            process.stdout.write(`Master Builder is building right now...\n`);
         },
         buildEnd() {
             const line = "---------------------------------------------------------";
-            const msg = `❤️❤️❤️ Tell us about your game! - games@phaser.io ❤️❤️❤️`;
+            const msg = `Akhirnya finally kelar juga buildnya.`;
             process.stdout.write(`${line}\n${msg}\n${line}\n`);
             
-            process.stdout.write(`✨ Done ✨\n`);
+            process.stdout.write(`Now that it's all over and DONE! ;)\n`);
         }
     }
 }   
