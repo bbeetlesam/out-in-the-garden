@@ -54,7 +54,7 @@ export class Disclaimer extends Scene
                 ease: 'Linear',
                 completeDelay: 500,
                 onComplete: () => {
-                    this.scene.start('Game');
+                    this.scene.start('Prologue');
                 }
             });
         };

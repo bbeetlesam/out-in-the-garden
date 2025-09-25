@@ -2,7 +2,7 @@ import { AUTO, Game, Scale } from 'phaser';
 import { Boot } from './scenes/Boot';
 import { Preloader } from './scenes/Preloader';
 import { Disclaimer } from './scenes/Disclaimer';
-import { Game as MainGame } from './scenes/Game';
+import { Prologue } from './scenes/Prologue';
 import { GameOver } from './scenes/GameOver';
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -19,7 +19,7 @@ const config: Phaser.Types.Core.GameConfig = {
         Boot,
         Preloader,
         Disclaimer,
-        MainGame,
+        Prologue,
         GameOver
     ],
     scale: {
