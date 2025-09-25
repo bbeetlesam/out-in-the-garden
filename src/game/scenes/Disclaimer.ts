@@ -1,10 +1,7 @@
-import { Scene, GameObjects } from 'phaser';
+import { Scene } from 'phaser';
 
 export class Disclaimer extends Scene
 {
-    background: GameObjects.Image;
-    disclaimer_text: GameObjects.Text;
-
     constructor ()
     {
         super('Disclaimer');
@@ -14,6 +11,7 @@ export class Disclaimer extends Scene
     {
         const centerX = this.cameras.main.centerX;
         const centerY = this.cameras.main.centerY;
+        const fadeDuration = 1700; // in ms (1s = 1000ms)
 
         const text = [
             '', '',
@@ -24,26 +22,54 @@ export class Disclaimer extends Scene
             'Press any key to continue.'
         ].join('\n');
 
-        this.add.text(centerX, centerY - 130, 'BEFORE YOU PLAY,', {
+        const redText = this.add.text(centerX, centerY - 130, 'BEFORE YOU PLAY,', {
             fontFamily: '"Winky Sans"',
             fontSize: '38px',
             color: '#ff4d4d',
             align: 'center'
         }).setOrigin(0.5);
 
-        this.disclaimer_text = this.add.text(centerX, centerY, text, {
-            font: '32px "Winky Sans"', fontStyle: 'italic',
+        const disclaimerText = this.add.text(centerX, centerY, text, {
+            font: '32px "Winky Sans"',
+            fontStyle: 'italic',
             color: '#ffffff',
             lineSpacing: 10, letterSpacing: 1,
             align: 'center'
         }).setOrigin(0.5);
 
-        const nextScene = () => {
-            this.scene.start('Game');
+        // init alpha for the text
+        redText.alpha = 0;
+        disclaimerText.alpha = 0;
+
+        // fade out and start next scene
+        const startNextScene = () => {
+            // disable input after first input
+            this.input.off('pointerdown', startNextScene);
+            this.input.keyboard?.off('keydown', startNextScene);
+
+            this.tweens.add({
+                targets: [redText, disclaimerText],
+                alpha: 0,
+                duration: fadeDuration / 1.5,
+                ease: 'Linear',
+                completeDelay: 500,
+                onComplete: () => {
+                    this.scene.start('Game');
+                }
+            });
         };
 
-        // move to the next scene by doing anything
-        this.input.once('pointerdown', nextScene);
-        this.input.keyboard?.once('keydown', nextScene);
+        // fade in on scene start
+        this.tweens.add({
+            targets: [redText, disclaimerText],
+            alpha: 1,
+            duration: fadeDuration,
+            ease: 'Linear',
+            onComplete: () => {
+                // add once listener for starting the next scene
+                this.input.once('pointerdown', startNextScene);
+                this.input.keyboard?.once('keydown', startNextScene);
+            }
+        });
     }
 }
