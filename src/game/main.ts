@@ -30,7 +30,13 @@ const config: Phaser.Types.Core.GameConfig = {
         keyboard: true,
         mouse: true,
         windowEvents: true
-    }
+    },
+    render: {
+        pixelArt: false,
+        antialias: true,
+    },
+    // @ts-ignore
+    resolution: window.devicePixelRatio,
 };
 
 const StartGame = (parent: string) => {
