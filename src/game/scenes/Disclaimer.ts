@@ -27,7 +27,7 @@ export class Disclaimer extends Scene
             fontSize: '38px',
             color: '#ff4d4d',
             align: 'center'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setResolution(window.devicePixelRatio);
 
         const disclaimerText = this.add.text(centerX, centerY, text, {
             font: '32px "Winky Sans"',
@@ -35,7 +35,7 @@ export class Disclaimer extends Scene
             color: '#ffffff',
             lineSpacing: 10, letterSpacing: 1,
             align: 'center'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setResolution(window.devicePixelRatio);
 
         // init alpha for the text
         redText.alpha = 0;
