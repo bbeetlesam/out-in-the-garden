@@ -39,14 +39,13 @@ export class Preloader extends Scene
 
     preload ()
     {
-        // load the images
         this.load.setPath('assets');
+
+        // load the images
         this.load.image('background', 'bg.png');
 
-        // for debugging
-        // for (let i = 0; i < 2000; i++) {
-        //     this.load.image('logo-dummy-' + i, 'logo.png');
-        // }
+        // load the sounds
+        this.load.audio('ac-noise', '/sounds/looping-ac.ogg')
     }
 
     create ()
